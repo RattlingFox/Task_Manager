@@ -59,7 +59,6 @@ class UI // фронт программы и сборка элемента сп�
     public static void show(Manager manager)
     {
         List<Task> showList = manager.getList().OrderBy(task => task._date).ToList();
-        
         for (int i = 0; i < showList.Count; i++)
         {
 
@@ -75,34 +74,31 @@ class UI // фронт программы и сборка элемента сп�
         int indexUI;
         string subject;
         DateTime date;
-        bool isOK = false;
-        while (!isOK)
+        while (true)
         {
             try
             {
                 indexUI = UI.insertInt();
-                Console.WriteLine("");
-                Console.WriteLine("Insert task");
-                subject = Console.ReadLine();
-                Console.WriteLine("");
-                date = UI.insertDataTime();
-                Task task = new Task(subject, date);
-                manager.edit(indexUI, task);
-                Console.WriteLine("Edited successfully");
-                Console.WriteLine("");
-                return;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Error. There is nothing to edit");
-                Console.WriteLine("");
-                isOK = true;
+                if (manager.isExist(indexUI))
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Insert task");
+                    subject = Console.ReadLine();
+                    Console.WriteLine("");
+                    date = UI.insertDataTime();
+                    Task task = new Task(subject, date);
+                    manager.edit(indexUI, task);
+                    Console.WriteLine("Edited successfully");
+                    Console.WriteLine("");
+                    return;
+                }
+                throw new Exception();
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("");
-                isOK = true;
+                return;
             }
             catch (Exception)
             {

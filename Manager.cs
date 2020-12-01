@@ -31,4 +31,9 @@ class Manager // бэк программы
         _list.RemoveAt(index);
         _list.Insert(index, task);
     }
+
+    public bool isExist(int index)
+    {
+        return _list.Count > index && index >= 0;
+    }
 }
