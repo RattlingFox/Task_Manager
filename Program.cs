@@ -50,6 +50,11 @@ namespace Task_Manager
                     System.Threading.Thread.Sleep(2000);
                     return;
                 }
+                else
+                {
+                    Console.WriteLine("Wrong number");
+                    Console.WriteLine("");
+                }
                 
             }           
         }
