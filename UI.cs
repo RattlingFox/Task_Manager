@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 class UI // фронт программы и сборка элемента списка
 {
@@ -155,6 +156,19 @@ class UI // фронт программы и сборка элемента сп�
             
         
     }
+    public static void viewFiles()
+    {
+        string[] files = Storage.getFiles();
+        Console.WriteLine(files);
+        Console.WriteLine("");
+    }
 
-
+    /*public static void readFileToList()
+    {
+        Task task = new Task("", default);
+        for (int indexString = 0; indexString <= files.Length; indexString++)
+        {
+            List<Task> getList = ;
+            files[indexString] = manager.add[]);
+    }*/
 }

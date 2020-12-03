@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 class Manager // бэк программы
 {
@@ -35,5 +36,10 @@ class Manager // бэк программы
     public bool isExist(int index)
     {
         return _list.Count > index && index >= 0;
+    }
+
+    public void insert(int index, Task task)
+    {
+        _list.Insert(index, task);
     }
 }

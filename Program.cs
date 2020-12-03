@@ -21,7 +21,8 @@ namespace Task_Manager
                 Console.WriteLine("2 - Add task;");
                 Console.WriteLine("3 - Edit task");
                 Console.WriteLine("4 - Remove task");
-                Console.WriteLine("5 - Exit");
+                Console.WriteLine("5 - View files in directory");
+                Console.WriteLine("6 - Exit");
                 string choose = Console.ReadLine();
                 if (choose == "1")
                 {
@@ -44,6 +45,10 @@ namespace Task_Manager
                     UI.remove(manager);
                 }
                 else if (choose == "5")
+                {
+                    UI.viewFiles();
+                }
+                else if (choose == "6")
                 {
                     Console.Clear();
                     Console.WriteLine("Good Bye!");
