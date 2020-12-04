@@ -45,8 +45,8 @@ class Storage
         Console.WriteLine("Choose the file ID");
         try
         {
-            string PATH = Storage.getFiles()[int.Parse(Console.ReadLine())];
-            string[] files = File.ReadAllLines(PATH);
+            string PATH_TO = Storage.getFiles()[int.Parse(Console.ReadLine())];
+            string[] files = File.ReadAllLines(PATH_TO);
             for (int indexString = 0; indexString < files.Length; indexString++)
             {
                 string[] words = files[indexString].Split('\t');
