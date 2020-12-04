@@ -9,7 +9,7 @@ class UI // фронт программы и сборка элемента сп�
     {
         string subject;
         DateTime date;
-        Console.WriteLine("Insert new task");
+        Console.WriteLine("Enter new task");
         subject = Console.ReadLine();
         Console.WriteLine("");
         try
@@ -25,7 +25,7 @@ class UI // фронт программы и сборка элемента сп�
             return;
         }
 
-        
+
     }
 
     public static void remove(Manager manager)
@@ -35,6 +35,7 @@ class UI // фронт программы и сборка элемента сп�
         {
             try
             {
+                Console.WriteLine("Enter task id");
                 indexUI = UI.insertInt();
                 manager.remove(indexUI);
                 Console.WriteLine("Removed successfully");
@@ -53,7 +54,7 @@ class UI // фронт программы и сборка элемента сп�
                 Console.WriteLine("");
                 return;
             }
-            
+
         }
     }
 
@@ -79,11 +80,12 @@ class UI // фронт программы и сборка элемента сп�
         {
             try
             {
+                Console.WriteLine("Enter task id");
                 indexUI = UI.insertInt();
                 if (manager.isExist(indexUI))
                 {
                     Console.WriteLine("");
-                    Console.WriteLine("Insert task");
+                    Console.WriteLine("Enter task");
                     subject = Console.ReadLine();
                     Console.WriteLine("");
                     date = UI.insertDataTime();
@@ -113,7 +115,6 @@ class UI // фронт программы и сборка элемента сп�
     {
         string indexUI;
         int indexUI_Int;
-        Console.WriteLine("Insert task id");
         indexUI = Console.ReadLine();
         try
         {
@@ -135,7 +136,7 @@ class UI // фронт программы и сборка элемента сп�
     {
         string date;
         DateTime check;
-        Console.WriteLine("Insert date YYYY/MM/DD");
+        Console.WriteLine("Enter date YYYY/MM/DD");
         date = Console.ReadLine();
         Console.WriteLine("");
         try
@@ -149,26 +150,22 @@ class UI // фронт программы и сборка элемента сп�
             if (Console.ReadLine() == "y")
             {
                 Console.WriteLine("");
-                insertDataTime();                
+                insertDataTime();
             }
             throw new ArgumentException("Error. Date is wrong");
         }
-            
-        
-    }
-    public static void viewFiles()
-    {
-        string[] files = Storage.getFiles();
-        Console.WriteLine(files);
-        Console.WriteLine("");
-    }
 
-    /*public static void readFileToList()
+
+    }
+    
+    public static void clear(Manager manager)
     {
-        Task task = new Task("", default);
-        for (int indexString = 0; indexString <= files.Length; indexString++)
+        string change;
+        Console.WriteLine("Clear current list? Type 'y' for remove all data");
+        change = Console.ReadLine();
+        if (change == "y")
         {
-            List<Task> getList = ;
-            files[indexString] = manager.add[]);
-    }*/
+            manager.clear();
+        }
+    }
 }

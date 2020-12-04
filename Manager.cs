@@ -42,4 +42,9 @@ class Manager // бэк программы
     {
         _list.Insert(index, task);
     }
+
+    public void clear()
+    {
+        _list.Clear();
+    }
 }

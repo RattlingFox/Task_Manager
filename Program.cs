@@ -21,8 +21,11 @@ namespace Task_Manager
                 Console.WriteLine("2 - Add task;");
                 Console.WriteLine("3 - Edit task");
                 Console.WriteLine("4 - Remove task");
-                Console.WriteLine("5 - View files in directory");
-                Console.WriteLine("6 - Exit");
+                Console.WriteLine("5 - Clear data");
+                Console.WriteLine("6 - View files in directory");
+                Console.WriteLine("7 - Read file to list");
+                Console.WriteLine("8 - Save data to file");
+                Console.WriteLine("9 - Exit");
                 string choose = Console.ReadLine();
                 if (choose == "1")
                 {
@@ -46,9 +49,21 @@ namespace Task_Manager
                 }
                 else if (choose == "5")
                 {
-                    UI.viewFiles();
+                    UI.clear(manager);
                 }
                 else if (choose == "6")
+                {
+                    Storage.viewFiles();
+                }
+                else if (choose == "7")
+                {
+                    Storage.readFileToList(manager);
+                }
+                else if (choose == "8")
+                {
+                    Storage.saveFile(manager);
+                }
+                else if (choose == "9")
                 {
                     Console.Clear();
                     Console.WriteLine("Good Bye!");
