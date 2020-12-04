@@ -21,12 +21,12 @@ class Storage
     public static void viewFiles()
     {
         Console.WriteLine("");
-        string[] files = Storage.getFiles();
+        string[] filesView = Storage.getFiles();
         try
         {
-            for (int indexString = 0; indexString < files.Length; indexString++)
+            for (int indexString = 0; indexString < filesView.Length; indexString++)
             {
-                Console.WriteLine(indexString + ")" + files[indexString]);
+                Console.WriteLine(indexString + ")" + filesView[indexString]);
 
             }
         }
@@ -40,16 +40,16 @@ class Storage
 
     public static void readFileToList(Manager manager)
     {
-        viewFiles();
+        Storage.viewFiles();
         UI.clear(manager);
         Console.WriteLine("Choose the file ID");
         try
         {
-            string PATH_TO = Storage.getFiles()[int.Parse(Console.ReadLine())];
-            string[] files = File.ReadAllLines(PATH_TO);
-            for (int indexString = 0; indexString < files.Length; indexString++)
+            string chooseFile = Storage.getFiles()[int.Parse(Console.ReadLine())];
+            string[] filesRead = File.ReadAllLines(chooseFile);
+            for (int indexString = 0; indexString < filesRead.Length; indexString++)
             {
-                string[] words = files[indexString].Split('\t');
+                string[] words = filesRead[indexString].Split('\t');
                 Task task = new Task(words[1], Convert.ToDateTime(words[0]));
                 manager.add(task);
             }
@@ -67,17 +67,17 @@ class Storage
 
     public static void saveFile(Manager manager)
     {
-        string[] files = Storage.getFiles();
+        string[] filesSave = Storage.getFiles();
         List<Task> task = manager.getList();
         string str = Convert.ToString(task);
-        viewFiles();
-        Console.WriteLine(files.Length + ")Create new file");
+        Storage.viewFiles();
+        Console.WriteLine(filesSave.Length + ")Create new file");
         Console.WriteLine("");
         Console.WriteLine("Change the file to overwrite, or create new.");
         while (true)
         {
             int change_int = UI.insertInt();
-            if (change_int == files.Length)
+            if (change_int == filesSave.Length)
             {
                 try
                 {
@@ -98,7 +98,7 @@ class Storage
             }
             else if (manager.isExist(change_int))
             {
-                File.WriteAllText(files[change_int], str);
+                File.WriteAllText(@filesSave[change_int], str);
             }
             else
             {

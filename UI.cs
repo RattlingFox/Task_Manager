@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
+//using System.IO;
 
 class UI // фронт программы и сборка элемента списка
 {
