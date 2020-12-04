@@ -83,22 +83,19 @@ class Storage
                 {
                     Console.WriteLine("Enter a name for the new file");
                     string fileName = Console.ReadLine();
-                    File.WriteAllText(Storage.PATH + "'\'" + fileName + ".txt", str);
+                    File.WriteAllText(Storage.PATH + "\\" + fileName + ".txt", str);
                     return;
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error. Wrong file name. Type 'y' for repeat ");
-                    if (Console.ReadLine() != "y")
-                    {
-                        Console.WriteLine("");
-                        return;
-                    }
+                    Console.WriteLine("Error. Wrong file name");
+                    Console.WriteLine("");
+                    return;
                 }
             }
             else if (manager.isExist(change_int))
             {
-                File.WriteAllText(@filesSave[change_int], str);
+                File.WriteAllText(filesSave[change_int], str);
             }
             else
             {

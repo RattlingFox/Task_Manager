@@ -22,9 +22,9 @@ namespace Task_Manager
                 Console.WriteLine("3 - Edit task");
                 Console.WriteLine("4 - Remove task");
                 Console.WriteLine("5 - Clear data");
-                Console.WriteLine("6 - View files in directory");
-                Console.WriteLine("7 - Read file to list");
-                Console.WriteLine("8 - Save data to file");
+                Console.WriteLine("6 - View all items in storage");
+                Console.WriteLine("7 - Read item from storage to list");
+                Console.WriteLine("8 - Save data to item in storage");
                 Console.WriteLine("9 - Exit");
                 string choose = Console.ReadLine();
                 if (choose == "1")
