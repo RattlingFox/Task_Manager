@@ -69,14 +69,24 @@ class Storage
     {
         string[] filesSave = Storage.getFiles();
         List<Task> task = manager.getList();
-        string str = Convert.ToString(task);
+        string str = Task.convertToFile(task);
         Storage.viewFiles();
         Console.WriteLine(filesSave.Length + ")Create new file");
         Console.WriteLine("");
         Console.WriteLine("Change the file to overwrite, or create new.");
         while (true)
         {
-            int change_int = UI.insertInt();
+            int change_int = -1;
+            try
+            {
+                change_int = UI.insertInt();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("");
+                return;
+            }
             if (change_int == filesSave.Length)
             {
                 try
