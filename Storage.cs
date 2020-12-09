@@ -106,6 +106,7 @@ class Storage
             else if (manager.isExist(change_int))
             {
                 File.WriteAllText(filesSave[change_int], str);
+                return;
             }
             else
             {
