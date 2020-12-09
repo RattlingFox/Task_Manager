@@ -14,6 +14,10 @@ class Storage
 
     public static string[] getFiles()
     {
+        if (!Directory.Exists(PATH))
+        {
+            Directory.CreateDirectory(PATH);
+        }
         string[] files = Directory.GetFiles(PATH);
         return files;
     }
