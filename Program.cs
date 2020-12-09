@@ -26,6 +26,7 @@ namespace Task_Manager
                 Console.WriteLine("7 - Read item from storage to list");
                 Console.WriteLine("8 - Save data to item in storage");
                 Console.WriteLine("9 - Exit");
+                Console.WriteLine("10 - DB");
                 string choose = Console.ReadLine();
                 if (choose == "1")
                 {
@@ -69,6 +70,10 @@ namespace Task_Manager
                     Console.WriteLine("Good Bye!");
                     System.Threading.Thread.Sleep(2000);
                     return;
+                }
+                else if (choose == "10")
+                {
+                    storageDB.getTableFromDB(manager);
                 }
                 else
                 {
