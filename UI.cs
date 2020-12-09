@@ -31,11 +31,11 @@ class UI // фронт программы и сборка элемента сп�
     public static void remove(Manager manager)
     {
         int indexUI;
+        UI.show(manager);
         while (true)
         {
             try
             {
-                Console.WriteLine("Enter task id");
                 indexUI = UI.insertInt();
                 manager.remove(indexUI);
                 Console.WriteLine("Removed successfully");
@@ -76,11 +76,11 @@ class UI // фронт программы и сборка элемента сп�
         int indexUI;
         string subject;
         DateTime date;
+        UI.show(manager);
         while (true)
         {
             try
             {
-                Console.WriteLine("Enter task id");
                 indexUI = UI.insertInt();
                 if (manager.isExist(indexUI))
                 {
@@ -115,7 +115,8 @@ class UI // фронт программы и сборка элемента сп�
     {
         string indexUI;
         int indexUI_Int;
-        indexUI = Console.ReadLine();
+        Console.WriteLine("Enter id");
+        indexUI = Console.ReadLine();        
         try
         {
             indexUI_Int = Convert.ToInt32(indexUI);

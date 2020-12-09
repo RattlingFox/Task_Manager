@@ -42,9 +42,9 @@ class Storage
     {
         Storage.viewFiles();
         UI.clear(manager);
-        Console.WriteLine("Choose the file ID");
         try
         {
+            Console.WriteLine("Choose the file ID");
             string chooseFile = Storage.getFiles()[int.Parse(Console.ReadLine())];
             string[] filesRead = File.ReadAllLines(chooseFile);
             for (int indexString = 0; indexString < filesRead.Length; indexString++)
@@ -58,10 +58,12 @@ class Storage
         catch (IndexOutOfRangeException)
         {
             Console.WriteLine("Error. No file on ID");
+            Console.WriteLine("");
         }
         catch (Exception)
         {
             Console.WriteLine("Error. Wrong number");
+            Console.WriteLine("");
         }
     }
 
@@ -72,10 +74,10 @@ class Storage
         string str = Task.convertToFile(task);
         Storage.viewFiles();
         Console.WriteLine(filesSave.Length + ")Create new file");
-        Console.WriteLine("");
-        Console.WriteLine("Change the file to overwrite, or create new.");
         while (true)
         {
+            Console.WriteLine("");
+            Console.WriteLine("Change the file to overwrite, or create new.");
             int change_int = -1;
             try
             {
@@ -106,6 +108,7 @@ class Storage
             else if (manager.isExist(change_int))
             {
                 File.WriteAllText(filesSave[change_int], str);
+                Console.WriteLine("");
                 return;
             }
             else
