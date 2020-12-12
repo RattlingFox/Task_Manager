@@ -17,52 +17,28 @@ namespace Task_Manager
             while (true)
             {
                 Console.WriteLine("Choose the operation:");
-                Console.WriteLine("1 - Show all tasks;");
-                Console.WriteLine("2 - Add task;");
-                Console.WriteLine("3 - Edit task");
-                Console.WriteLine("4 - Remove task");
-                Console.WriteLine("5 - Clear data");
-                Console.WriteLine("6 - View all items in storage");
-                Console.WriteLine("7 - Read item from storage to list");
-                Console.WriteLine("8 - Save data to item in storage");
+                Console.WriteLine("1 - Show all tables in storage");
+                Console.WriteLine("2 - Show all tasks in a table");
+                Console.WriteLine("3 - Add a new task in a table");
+                //Console.WriteLine("4 - Edit a task in a table");
+                //Console.WriteLine("5 - Remove task from table");
+                //Console.WriteLine("6 - Remove table from storage");
                 Console.WriteLine("9 - Exit");
-                Console.WriteLine("10 - DB");
                 string choose = Console.ReadLine();
                 if (choose == "1")
                 {
                     Console.Clear();
-                    UI.show(manager);
+                    storageDB.getTableList();
                 }
                 else if (choose == "2")
                 {
                     Console.Clear();
-                    UI.add(manager);
+                    storageDB.getTableFromDB();
                 }
                 else if (choose == "3")
                 {
                     Console.Clear();
-                    UI.edit(manager);
-                }
-                else if (choose == "4")
-                {
-                    Console.Clear();
-                    UI.remove(manager);
-                }
-                else if (choose == "5")
-                {
-                    UI.clear(manager);
-                }
-                else if (choose == "6")
-                {
-                    Storage.viewFiles();
-                }
-                else if (choose == "7")
-                {
-                    Storage.readFileToList(manager);
-                }
-                else if (choose == "8")
-                {
-                    Storage.saveFile(manager);
+                    storageDB.addNewTask();
                 }
                 else if (choose == "9")
                 {
@@ -70,10 +46,6 @@ namespace Task_Manager
                     Console.WriteLine("Good Bye!");
                     System.Threading.Thread.Sleep(2000);
                     return;
-                }
-                else if (choose == "10")
-                {
-                    storageDB.getTableFromDB(manager);
                 }
                 else
                 {
