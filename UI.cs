@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Text;
-//using System.IO;
-//using System.Data.SqlClient;
-//using System.Data.Common;
-//using Task_Manager;
 
 
 class UI // фронт программы
 {
+    // Выводит все списки с задачами из БД
     public static void getTablesFromDB()
     {
         List<string> tables = Manager.getTableList();
@@ -27,6 +23,7 @@ class UI // фронт программы
         }
     }
 
+    // Добавление новой задачи в выбранный список
     public static void addNewTask()
     {
         try
@@ -59,6 +56,7 @@ class UI // фронт программы
         }
     }
 
+    // Редактирование выбранной задачи в выбранном списке
     public static void editTaskInTable()
     {
         try
@@ -69,10 +67,9 @@ class UI // фронт программы
             string textList = "Select the task list to edit the task";
             int tableId = Manager.insertInt(textList);
             Manager.checkIndexTable(list[tableId]);
-            Console.WriteLine("");
             Manager.getListFromTable(list, tableId);
-            Console.WriteLine("");
             string textTask = "Select the task id to edit";
+            Console.WriteLine("");
             int taskId = Manager.insertInt(textTask);
             Manager.checkIndexString(taskId, list[tableId]);
             Console.WriteLine("");
@@ -90,8 +87,15 @@ class UI // фронт программы
             Console.WriteLine("");
             return;
         }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine("");
+            return;
+        }
     }
 
+    // Удаление выбранной задачи из выбранного списка
     public static void removeTaskFromTable()
     {
         try
@@ -124,6 +128,7 @@ class UI // фронт программы
         }        
     }
 
+    // Создание нового списка задач в БД
     public static void createTableInStorage()
     {
         try
@@ -141,6 +146,7 @@ class UI // фронт программы
         }
     }
 
+    // Удаление выбранного списка задач из БД
     public static void removeTableFromStorage()
     {
         try

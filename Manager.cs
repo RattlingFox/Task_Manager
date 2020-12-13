@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.Common;
 using Task_Manager;
-//using System.Text;
-//using System.IO;
 
 class Manager // бэк программы
 {
@@ -18,6 +16,7 @@ class Manager // бэк программы
         Console.WriteLine("");
         cmd.CommandText = "SELECT tasks_list_name FROM tasks_list";
         using DbDataReader reader = cmd.ExecuteReader();
+        // Вывод строк с названиями спсков задач до окончания работы reader (пока есть что выводить)
         if (reader.HasRows)
             for (int i = 0; reader.Read(); i++)
             {
@@ -29,6 +28,7 @@ class Manager // бэк программы
         Console.WriteLine("");
         return tables;
     }
+
     public static void getListFromTable(List<string> tables, int index)
     {
         SqlConnection connect = DBUtils.GetDBConnection();
@@ -40,6 +40,7 @@ class Manager // бэк программы
             Console.WriteLine("");
             cmd.CommandText = $"Select * from tasks WHERE tasks_list_name = '{tables[index]}'";
             using DbDataReader reader = cmd.ExecuteReader();
+            // Вывод набора строк с содержимым списка задач
             if (reader.HasRows)
                 while (reader.Read())
                 {
@@ -86,6 +87,7 @@ class Manager // бэк программы
         connect.Dispose();
     }
 
+    // Нахождение свободного индекса строки в таблице с задачами
     public static int isExist(string tableName)
     {
         int index;
@@ -95,6 +97,7 @@ class Manager // бэк программы
         cmd.Connection = connect;
         cmd.CommandText = $"SELECT id FROM tasks";
         using DbDataReader reader = cmd.ExecuteReader();
+        // Увеличивает индекс на 1 пока reader не достигнет конца таблицы
         for (index = 0 ; reader.Read(); index++)
         {
             reader.GetInt32(0);
@@ -105,6 +108,7 @@ class Manager // бэк программы
         return index;
     }
 
+    // Проверка существования индекса, указывающего на список задач
     public static void checkIndexTable(string list)
     {
         SqlConnection connect = DBUtils.GetDBConnection();
@@ -113,7 +117,6 @@ class Manager // бэк программы
         {
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
-            Console.WriteLine("");
             cmd.CommandText = $"Select * FROM tasks WHERE tasks_list_name = '{list}'";
             using DbDataReader reader = cmd.ExecuteReader();
         }
@@ -124,6 +127,7 @@ class Manager // бэк программы
         }
     }
 
+    // Проверка существования индекса, указывающего на задачу
     public static void checkIndexString(int task, string list)
     {
         SqlConnection connect = DBUtils.GetDBConnection();
@@ -132,7 +136,6 @@ class Manager // бэк программы
         {
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
-            Console.WriteLine("");
             cmd.CommandText = $"SELECT * FROM tasks WHERE tasks_list_name = '{list}' AND id = {task}";
             using DbDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
@@ -147,6 +150,7 @@ class Manager // бэк программы
         }
     }
 
+    // Проверка ввода целого числа пользователем
     public static int insertInt(string text)
     {
         string indexUI;
@@ -160,6 +164,8 @@ class Manager // бэк программы
         }
         catch (Exception)
         {
+            // Запрос пользователю на повторный ввод при ошибке ввода
+            // Если пользователь согласен рекурсия метода
             Console.WriteLine("Error. Type 'y' for repeat");
             if (Console.ReadLine() == "y")
             {
@@ -169,6 +175,7 @@ class Manager // бэк программы
             throw new ArgumentException("Error. Id is wrong");
         }
     }
+
     public static DateTime insertDataTime()
     {
         string date;
@@ -183,6 +190,8 @@ class Manager // бэк программы
         }
         catch (Exception)
         {
+            // Запрос пользователю на повторный ввод при ошибке ввода
+            // Если пользователь согласен рекурсия метода
             Console.WriteLine("Error. Type 'y' for repeat");
             if (Console.ReadLine() == "y")
             {
@@ -193,9 +202,9 @@ class Manager // бэк программы
         }
     }
 
+    // Создание в таблице с названиями списков задач новой строки
     public static void createTableInStorage(string tableName)
     {
-        //int index = Manager.isExist(tableName);
         SqlConnection connect = DBUtils.GetDBConnection();
         connect.Open();
         SqlCommand cmd = new SqlCommand();
@@ -206,6 +215,7 @@ class Manager // бэк программы
         connect.Dispose();
     }
 
+    // Удаление из таблицы с названиями списков задач указанной строки
     public static void removeTableFromStorage(string list)
     {
         SqlConnection connect = DBUtils.GetDBConnection();

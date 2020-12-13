@@ -1,5 +1,4 @@
 ﻿using System;
-//using System.Collections.Generic;
 
 namespace Task_Manager
 {
@@ -14,6 +13,7 @@ namespace Task_Manager
             Console.ReadKey();
             Console.Clear();
             Manager manager = new Manager();
+            // Необходимо для того, чтобы меню выводилось до закрытия программы
             while (true)
             {
                 Console.WriteLine("Choose the operation:");

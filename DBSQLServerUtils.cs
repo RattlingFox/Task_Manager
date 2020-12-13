@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 namespace Task_Manager
 {
+    /*
+     * Подключение к локальному серверу MS SQL
+     */
+
     class DBSQLServerUtils
     {
         public static SqlConnection GetDBConnection(string datasource, string database, string username, string password)
