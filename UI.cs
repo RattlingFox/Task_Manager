@@ -12,10 +12,10 @@ class UI // фронт программы
     public static void getTablesFromDB()
     {
         List<string> tables = Manager.getTableList();
-        Console.WriteLine("Select the task list to display");
+        string text = "Select the task list to display";
         try
         {
-            int index = Manager.insertInt();
+            int index = Manager.insertInt(text);
             Manager.getListFromTable(tables, index);
             Console.WriteLine("");
         }
@@ -34,15 +34,14 @@ class UI // фронт программы
             List<string> list = Manager.getTableList();
             string subject;
             DateTime date;
-            Console.WriteLine("Select the task list to add a new task");
-            int index = Manager.insertInt();
+            string text = "Select the task list to add a new task";
+            int index = Manager.insertInt(text);
             Manager.checkIndexTable(list[index]);
-            Console.WriteLine("");
             Console.WriteLine("Enter a new task");
             subject = Console.ReadLine();
             Console.WriteLine("");
             date = Manager.insertDataTime();
-            Manager.add(list[index], index, subject, date);
+            Manager.add(list[index], subject, date);
             Console.WriteLine("New task added successfully");
             Console.WriteLine("");
         }
@@ -67,33 +66,23 @@ class UI // фронт программы
             List<string> list = Manager.getTableList();
             string subject;
             DateTime date;
-            Console.WriteLine("Select the task list to edit the task");
-            int indexTable = Manager.insertInt();
-            Manager.checkIndexTable(list[indexTable]);
+            string textList = "Select the task list to edit the task";
+            int tableId = Manager.insertInt(textList);
+            Manager.checkIndexTable(list[tableId]);
             Console.WriteLine("");
-            Manager.getListFromTable(list, indexTable);
+            Manager.getListFromTable(list, tableId);
             Console.WriteLine("");
-            Console.WriteLine("Select the task id to edit");
-            int indexTask = Manager.insertInt();
-            Manager.checkIndexString(indexTask, list[indexTable]);
+            string textTask = "Select the task id to edit";
+            int taskId = Manager.insertInt(textTask);
+            Manager.checkIndexString(taskId, list[tableId]);
             Console.WriteLine("");
             Console.WriteLine("Enter a new task");
             subject = Console.ReadLine();
             Console.WriteLine("");
-            try
-            {
-                date = Manager.insertDataTime();
-                Manager.add(list[indexTable], indexTable, subject, date);
-                Manager.remove(list[indexTask], indexTask);
-                Console.WriteLine("Task edited successfully");
-                Console.WriteLine("");
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("");
-                return;
-            }
+            date = Manager.insertDataTime();
+            Manager.add(list[tableId], subject, date);
+            Manager.remove(list[tableId], taskId);
+            Console.WriteLine("Task edited successfully \n");
         }
         catch (IndexOutOfRangeException)
         {
@@ -108,32 +97,31 @@ class UI // фронт программы
         try
         {
             List<string> list = Manager.getTableList();
-            Console.WriteLine("Select the task list to remove the task");
-            int indexTable = Manager.insertInt();
+            string text_list = "Select the task list to remove the task";
+            int indexTable = Manager.insertInt(text_list);
             Manager.checkIndexTable(list[indexTable]);
-            Console.WriteLine("");
             Manager.getListFromTable(list, indexTable);
             Console.WriteLine("");
-            Console.WriteLine("Select the task id to remove the task from table");
-            int indexTask = Manager.insertInt();
+            string text_task = "Select the task id to remove the task from table";
+            int indexTask = Manager.insertInt(text_task);
             Manager.checkIndexString(indexTask, list[indexTable]);
-            Manager.remove(list[indexTask], indexTask);
+            Manager.remove(list[indexTable], indexTask);
             Console.WriteLine("");
             Console.WriteLine("Task removed from the list successfully");
             Console.WriteLine("");
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("Error. There is nothing on this ID");
+            Console.WriteLine("");
+            return;
         }
         catch (ArgumentException ex)
         {
             Console.WriteLine(ex.Message);
             Console.WriteLine("");
             return;
-        }
-        catch (IndexOutOfRangeException)
-        {
-            Console.WriteLine("Error. There is nothing on this ID");
-            Console.WriteLine("");
-            return;
-        }
+        }        
     }
 
     public static void createTableInStorage()
@@ -158,8 +146,8 @@ class UI // фронт программы
         try
         {
             List<string> list = Manager.getTableList();
-            Console.WriteLine("Select the task list to remove");
-            int indexTable = Manager.insertInt();
+            string text = "Select the task list to remove";
+            int indexTable = Manager.insertInt(text);
             Console.WriteLine("");
             Manager.removeTableFromStorage(list[indexTable]);
             Console.WriteLine("Task list removed successfully");

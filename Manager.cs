@@ -16,7 +16,7 @@ class Manager // бэк программы
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
         Console.WriteLine("");
-        cmd.CommandText = "SELECT TABLE_NAME FROM information_schema.TABLES";
+        cmd.CommandText = "SELECT tasks_list_name FROM tasks_list";
         using DbDataReader reader = cmd.ExecuteReader();
         if (reader.HasRows)
             for (int i = 0; reader.Read(); i++)
@@ -38,8 +38,7 @@ class Manager // бэк программы
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
             Console.WriteLine("");
-            cmd.CommandText = ("Select * from " + tables[index]);
-
+            cmd.CommandText = $"Select * from tasks WHERE tasks_list_name = '{tables[index]}'";
             using DbDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
                 while (reader.Read())
@@ -63,14 +62,13 @@ class Manager // бэк программы
         }
     }
 
-    public static void add(string list, int index, string subject,  DateTime date)
+    public static void add(string list, string subject,  DateTime date)
     {
-        index = Manager.isExist(index, list);
         SqlConnection connect = DBUtils.GetDBConnection();
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = $"INSERT INTO {list} VALUES ({index},'{subject}','{date.ToString("yyyy.MM.dd")}')";
+        cmd.CommandText = $"INSERT INTO tasks VALUES ('{subject}','{date.ToString("yyyy.MM.dd")}','{list}')";
         using DbDataReader reader = cmd.ExecuteReader();
         connect.Close();
         connect.Dispose();
@@ -82,19 +80,20 @@ class Manager // бэк программы
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = $"DELETE FROM {list} WHERE id = {indexTask}";
+        cmd.CommandText = $"DELETE FROM tasks WHERE tasks_list_name = '{list}' AND id = {indexTask}";
         using DbDataReader reader = cmd.ExecuteReader();
         connect.Close();
         connect.Dispose();
     }
 
-    public static int isExist(int index, string list)
+    public static int isExist(string tableName)
     {
+        int index;
         SqlConnection connect = DBUtils.GetDBConnection();
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = ("Select id from " + list);
+        cmd.CommandText = $"SELECT id FROM tasks";
         using DbDataReader reader = cmd.ExecuteReader();
         for (index = 0 ; reader.Read(); index++)
         {
@@ -115,7 +114,7 @@ class Manager // бэк программы
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
             Console.WriteLine("");
-            cmd.CommandText = ("Select * from " + list);
+            cmd.CommandText = $"Select * FROM tasks WHERE tasks_list_name = '{list}'";
             using DbDataReader reader = cmd.ExecuteReader();
         }
         finally
@@ -134,12 +133,12 @@ class Manager // бэк программы
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
             Console.WriteLine("");
-            cmd.CommandText = ("Select * from " + list + " WHERE id = " + task);
+            cmd.CommandText = $"SELECT * FROM tasks WHERE tasks_list_name = '{list}' AND id = {task}";
             using DbDataReader reader = cmd.ExecuteReader();
             if (!reader.HasRows)
-                {
-                    throw new ArgumentException("Error. There is nothing on this ID");
-                }
+            {
+
+            }
         }
         finally
         {
@@ -148,10 +147,11 @@ class Manager // бэк программы
         }
     }
 
-    public static int insertInt()
+    public static int insertInt(string text)
     {
         string indexUI;
         int indexUI_Int;
+        Console.WriteLine(text);
         indexUI = Console.ReadLine();
         try
         {
@@ -164,7 +164,7 @@ class Manager // бэк программы
             if (Console.ReadLine() == "y")
             {
                 Console.WriteLine("");
-                insertInt();
+                insertInt(text);
             }
             throw new ArgumentException("Error. Id is wrong");
         }
@@ -195,11 +195,12 @@ class Manager // бэк программы
 
     public static void createTableInStorage(string tableName)
     {
+        //int index = Manager.isExist(tableName);
         SqlConnection connect = DBUtils.GetDBConnection();
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = $"CREATE TABLE [dbo].[{tableName}] ([Id] INT NOT NULL PRIMARY KEY, [_subject] VARCHAR(500) NULL, [_date] DATE NOT NULL)";
+        cmd.CommandText = $"INSERT INTO tasks_list VALUES ('{tableName}')";
         using DbDataReader reader = cmd.ExecuteReader();
         connect.Close();
         connect.Dispose();
@@ -211,7 +212,7 @@ class Manager // бэк программы
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = $"DROP TABLE dbo." + list;
+        cmd.CommandText = $"DELETE FROM tasks_list WHERE tasks_list_name = '{list}'";
         using DbDataReader reader = cmd.ExecuteReader();
         connect.Close();
         connect.Dispose();
