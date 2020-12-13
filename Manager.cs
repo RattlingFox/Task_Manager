@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Data.SqlClient;
 using System.Data.Common;
 using Task_Manager;
+//using System.Text;
+//using System.IO;
 
 class Manager // бэк программы
 {
@@ -19,7 +19,6 @@ class Manager // бэк программы
         cmd.CommandText = "SELECT TABLE_NAME FROM information_schema.TABLES";
         using DbDataReader reader = cmd.ExecuteReader();
         if (reader.HasRows)
-            //while (reader.Read())
             for (int i = 0; reader.Read(); i++)
             {
                 tables.Add(reader.GetString(0));
@@ -95,7 +94,6 @@ class Manager // бэк программы
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-
         cmd.CommandText = ("Select id from " + list);
         using DbDataReader reader = cmd.ExecuteReader();
         for (index = 0 ; reader.Read(); index++)
@@ -106,6 +104,48 @@ class Manager // бэк программы
         connect.Close();
         connect.Dispose();
         return index;
+    }
+
+    public static void checkIndexTable(string list)
+    {
+        SqlConnection connect = DBUtils.GetDBConnection();
+        connect.Open();
+        try
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connect;
+            Console.WriteLine("");
+            cmd.CommandText = ("Select * from " + list);
+            using DbDataReader reader = cmd.ExecuteReader();
+        }
+        finally
+        {
+            connect.Close();
+            connect.Dispose();
+        }
+    }
+
+    public static void checkIndexString(int task, string list)
+    {
+        SqlConnection connect = DBUtils.GetDBConnection();
+        connect.Open();
+        try
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connect;
+            Console.WriteLine("");
+            cmd.CommandText = ("Select * from " + list + " WHERE id = " + task);
+            using DbDataReader reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+                {
+                    throw new ArgumentException("Error. There is nothing on this ID");
+                }
+        }
+        finally
+        {
+            connect.Close();
+            connect.Dispose();
+        }
     }
 
     public static int insertInt()
@@ -171,7 +211,7 @@ class Manager // бэк программы
         connect.Open();
         SqlCommand cmd = new SqlCommand();
         cmd.Connection = connect;
-        cmd.CommandText = $"DROP TABLE dbo.{list}";
+        cmd.CommandText = $"DROP TABLE dbo." + list;
         using DbDataReader reader = cmd.ExecuteReader();
         connect.Close();
         connect.Dispose();
