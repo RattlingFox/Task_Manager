@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Text;
 //using System.IO;
+//using System.Data.SqlClient;
+//using System.Data.Common;
+//using Task_Manager;
 
-class UI // фронт программы и сборка элемента списка
+
+class UI // фронт программы
 {
-    public static void add(Manager manager)
+    public static void getTablesFromDB()
     {
-        string subject;
-        DateTime date;
-        Console.WriteLine("Enter new task");
-        subject = Console.ReadLine();
-        Console.WriteLine("");
+        List<string> tables = Manager.getTableList();
+        string text = "Select the task list to display";
         try
         {
-            date = UI.insertDataTime();
-            Task task = new Task(subject, date);
-            manager.add(task);
+            int index = Manager.insertInt(text);
+            Manager.getListFromTable(tables, index);
+            Console.WriteLine("");
         }
         catch (ArgumentException ex)
         {
@@ -24,149 +25,145 @@ class UI // фронт программы и сборка элемента сп�
             Console.WriteLine("");
             return;
         }
-
-
     }
 
-    public static void remove(Manager manager)
+    public static void addNewTask()
     {
-        int indexUI;
-        UI.show(manager);
-        while (true)
-        {
-            try
-            {
-                indexUI = UI.insertInt();
-                manager.remove(indexUI);
-                Console.WriteLine("Removed successfully");
-                Console.WriteLine("");
-                return;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Error. There is nothing to remove");
-                Console.WriteLine("");
-                return;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("");
-                return;
-            }
-
-        }
-    }
-
-    public static void show(Manager manager)
-    {
-        List<Task> showList = manager.getList().OrderBy(task => task._date).ToList();
-        for (int i = 0; i < showList.Count; i++)
-        {
-
-            Console.WriteLine(i + " " + showList[i].toString());
-        }
-        Console.WriteLine("");
-
-
-    }
-
-    public static void edit(Manager manager)
-    {
-        int indexUI;
-        string subject;
-        DateTime date;
-        UI.show(manager);
-        while (true)
-        {
-            try
-            {
-                indexUI = UI.insertInt();
-                if (manager.isExist(indexUI))
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine("Enter task");
-                    subject = Console.ReadLine();
-                    Console.WriteLine("");
-                    date = UI.insertDataTime();
-                    Task task = new Task(subject, date);
-                    manager.edit(indexUI, task);
-                    Console.WriteLine("Edited successfully");
-                    Console.WriteLine("");
-                    return;
-                }
-                throw new Exception();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("");
-                return;
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Error. There is nothing to edit");
-                Console.WriteLine("");
-                return;
-            }
-        }
-    }
-    public static int insertInt()
-    {
-        string indexUI;
-        int indexUI_Int;
-        Console.WriteLine("Enter id");
-        indexUI = Console.ReadLine();        
         try
         {
-            indexUI_Int = Convert.ToInt32(indexUI);
-            return indexUI_Int;
+            List<string> list = Manager.getTableList();
+            string subject;
+            DateTime date;
+            string text = "Select the task list to add a new task";
+            int index = Manager.insertInt(text);
+            Manager.checkIndexTable(list[index]);
+            Console.WriteLine("Enter a new task");
+            subject = Console.ReadLine();
+            Console.WriteLine("");
+            date = Manager.insertDataTime();
+            Manager.add(list[index], subject, date);
+            Console.WriteLine("New task added successfully");
+            Console.WriteLine("");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine("");
+            return;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Console.WriteLine("Error. There is nothing on this ID");
+            Console.WriteLine("");
+            return;
+        }
+    }
+
+    public static void editTaskInTable()
+    {
+        try
+        {
+            List<string> list = Manager.getTableList();
+            string subject;
+            DateTime date;
+            string textList = "Select the task list to edit the task";
+            int tableId = Manager.insertInt(textList);
+            Manager.checkIndexTable(list[tableId]);
+            Console.WriteLine("");
+            Manager.getListFromTable(list, tableId);
+            Console.WriteLine("");
+            string textTask = "Select the task id to edit";
+            int taskId = Manager.insertInt(textTask);
+            Manager.checkIndexString(taskId, list[tableId]);
+            Console.WriteLine("");
+            Console.WriteLine("Enter a new task");
+            subject = Console.ReadLine();
+            Console.WriteLine("");
+            date = Manager.insertDataTime();
+            Manager.add(list[tableId], subject, date);
+            Manager.remove(list[tableId], taskId);
+            Console.WriteLine("Task edited successfully \n");
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Console.WriteLine("Error. There is nothing on this ID");
+            Console.WriteLine("");
+            return;
+        }
+    }
+
+    public static void removeTaskFromTable()
+    {
+        try
+        {
+            List<string> list = Manager.getTableList();
+            string text_list = "Select the task list to remove the task";
+            int indexTable = Manager.insertInt(text_list);
+            Manager.checkIndexTable(list[indexTable]);
+            Manager.getListFromTable(list, indexTable);
+            Console.WriteLine("");
+            string text_task = "Select the task id to remove the task from table";
+            int indexTask = Manager.insertInt(text_task);
+            Manager.checkIndexString(indexTask, list[indexTable]);
+            Manager.remove(list[indexTable], indexTask);
+            Console.WriteLine("");
+            Console.WriteLine("Task removed from the list successfully");
+            Console.WriteLine("");
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("Error. There is nothing on this ID");
+            Console.WriteLine("");
+            return;
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine("");
+            return;
+        }        
+    }
+
+    public static void createTableInStorage()
+    {
+        try
+        {
+            Console.WriteLine("Insert the name of new task list");
+            string tableName = Console.ReadLine();
+            Console.WriteLine("");
+            Manager.createTableInStorage(tableName);
+            Console.WriteLine("New task list created successfully");
+            Console.WriteLine("");
         }
         catch (Exception)
         {
-            Console.WriteLine("Error. Type 'y' for repeat");
-            if (Console.ReadLine() == "y")
-            {
-                Console.WriteLine("");
-                insertInt();
-            }
-            throw new ArgumentException("Error. Id is wrong");
+            Console.WriteLine("Name is wrong");
         }
     }
-    public static DateTime insertDataTime()
+
+    public static void removeTableFromStorage()
     {
-        string date;
-        DateTime check;
-        Console.WriteLine("Enter date YYYY/MM/DD");
-        date = Console.ReadLine();
-        Console.WriteLine("");
         try
         {
-            check = Convert.ToDateTime(date);
-            return check;
+            List<string> list = Manager.getTableList();
+            string text = "Select the task list to remove";
+            int indexTable = Manager.insertInt(text);
+            Console.WriteLine("");
+            Manager.removeTableFromStorage(list[indexTable]);
+            Console.WriteLine("Task list removed successfully");
+            Console.WriteLine("");
         }
-        catch (Exception)
+        catch (ArgumentException ex)
         {
-            Console.WriteLine("Error. Type 'y' for repeat");
-            if (Console.ReadLine() == "y")
-            {
-                Console.WriteLine("");
-                insertDataTime();
-            }
-            throw new ArgumentException("Error. Date is wrong");
+            Console.WriteLine(ex.Message);
+            Console.WriteLine("");
+            return;
         }
-
-
-    }
-    
-    public static void clear(Manager manager)
-    {
-        string change;
-        Console.WriteLine("Clear current list? Type 'y' for remove all data");
-        change = Console.ReadLine();
-        if (change == "y")
+        catch (IndexOutOfRangeException)
         {
-            manager.clear();
+            Console.WriteLine("Error. There is nothing on this ID");
+            Console.WriteLine("");
+            return;
         }
     }
 }
