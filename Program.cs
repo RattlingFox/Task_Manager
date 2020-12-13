@@ -29,12 +29,12 @@ namespace Task_Manager
                 if (choose == "1")
                 {
                     Console.Clear();
-                    storageDB.getTableList();
+                    Manager.getTableList();
                 }
                 else if (choose == "2")
                 {
                     Console.Clear();
-                    storageDB.getTableFromDB();
+                    UI.getTablesFromDB();
                 }
                 else if (choose == "3")
                 {
@@ -54,12 +54,12 @@ namespace Task_Manager
                 else if (choose == "6")
                 {
                     Console.Clear();
-                    storageDB.createTableInStorage();
+                    UI.createTableInStorage();
                 }
                 else if (choose == "7")
                 {
                     Console.Clear();
-                    storageDB.removeTableFromStorage();
+                    UI.removeTableFromStorage();
                 }
                 else if (choose == "9")
                 {
