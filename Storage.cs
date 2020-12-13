@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-class Storage
+/*class Storage
 {
     public const string PATH = @"D:\Task Manager Directory";
 
@@ -117,4 +117,4 @@ class Storage
             }
         }
     }
-}
+}*/

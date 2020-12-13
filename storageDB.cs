@@ -10,7 +10,7 @@ namespace Task_Manager
     {
         public static List<string> getTableList()
         {
-            List<string> indexTables = new List<string>();
+            List<string> tables = new List<string>();
             SqlConnection connect = DBUtils.GetDBConnection();
             connect.Open();
             SqlCommand cmd = new SqlCommand();
@@ -22,20 +22,27 @@ namespace Task_Manager
                 //while (reader.Read())
                 for (int i = 0 ; reader.Read() ; i++)
                 {
-                    indexTables.Add(reader.GetString(0));
-                    Console.WriteLine(i + ")" + indexTables[i]);
+                    tables.Add(reader.GetString(0));
+                    Console.WriteLine(i + ")" + tables[i]);
                 }
             connect.Close();
             connect.Dispose();
             Console.WriteLine("");
-            return indexTables;
+            return tables;
         }
 
         public static void getTableFromDB()
         {
-            List<string> indexTables = storageDB.getTableList();
+            List<string> tables = storageDB.getTableList();
             Console.WriteLine("Select the task list to display");
-            int index = UI.insertInt();
+            int index = Manager.insertInt();
+            storageDB.getListInTable(tables, index);
+            Console.WriteLine("");
+        }
+
+
+        public static void getListInTable(List<string> tables, int index)
+        {
             SqlConnection connect = DBUtils.GetDBConnection();
             connect.Open();
             try
@@ -43,7 +50,7 @@ namespace Task_Manager
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = connect;
                 Console.WriteLine("");
-                cmd.CommandText = ("Select * from " + indexTables[index]);
+                cmd.CommandText = ("Select * from " + tables[index]);
 
                 using DbDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
@@ -66,58 +73,42 @@ namespace Task_Manager
             {
                 connect.Close();
                 connect.Dispose();
-                
+
             }
-            Console.WriteLine("");
         }
 
-        public static void addNewTask()
+        public static void createTableInStorage()
         {
-            List<string> list = storageDB.getTableList();
-            Console.WriteLine("Select the task list to add a new task");
-            int index = UI.insertInt();
+            Console.WriteLine("Insert the name of new task list");
+            string tableName = Console.ReadLine();
+            Console.WriteLine("");
             SqlConnection connect = DBUtils.GetDBConnection();
             connect.Open();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connect;
+            cmd.CommandText = $"CREATE TABLE [dbo].[{tableName}] ([Id] INT NOT NULL PRIMARY KEY, [_subject] VARCHAR(500) NULL, [_date] DATE NOT NULL)";
+            using DbDataReader reader = cmd.ExecuteReader();
+            connect.Close();
+            connect.Dispose();
+            Console.WriteLine("New task list created successfully");
             Console.WriteLine("");
-            string subject;
-            DateTime date;
-            Console.WriteLine("Enter a new task");
-            subject = Console.ReadLine();
+        }
+
+        public static void removeTableFromStorage()
+        {
+            List<string> list = storageDB.getTableList();
+            Console.WriteLine("Select the task list to remove");
+            int indexTable = Manager.insertInt();
             Console.WriteLine("");
-            try
-            {
-                date = UI.insertDataTime();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("");
-                return;
-            }
-            cmd.CommandText = $"INSERT INTO {list[index]} VALUES ({index},'{subject}','{date.ToString("yyyy.MM.dd")}')";
+            SqlConnection connect = DBUtils.GetDBConnection();
+            connect.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connect;
+            cmd.CommandText = $"DROP TABLE dbo.{list[indexTable]}";
             using DbDataReader reader = cmd.ExecuteReader();
             connect.Close();
             connect.Dispose();
             Console.WriteLine("");
-        }
-
-        public static void editTaskInTable()
-        {
-
-        }
-
-
-        public static void removeTaskFromTable()
-        {
-
-        }
-
-
-        public static void removeTableFromStorage()
-        {
-
         }
     }
 }

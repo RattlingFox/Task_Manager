@@ -17,12 +17,13 @@ namespace Task_Manager
             while (true)
             {
                 Console.WriteLine("Choose the operation:");
-                Console.WriteLine("1 - Show all tables in storage");
-                Console.WriteLine("2 - Show all tasks in a table");
-                Console.WriteLine("3 - Add a new task in a table");
-                //Console.WriteLine("4 - Edit a task in a table");
-                //Console.WriteLine("5 - Remove task from table");
-                //Console.WriteLine("6 - Remove table from storage");
+                Console.WriteLine("1 - Show all task lists in storage");
+                Console.WriteLine("2 - Show all tasks in a task list");
+                Console.WriteLine("3 - Add a new task to the task list");
+                Console.WriteLine("4 - Edit task in the task list");
+                Console.WriteLine("5 - Remove task from task list");
+                Console.WriteLine("6 - Create task list in storage");
+                Console.WriteLine("7 - Remove task list from storage");
                 Console.WriteLine("9 - Exit");
                 string choose = Console.ReadLine();
                 if (choose == "1")
@@ -38,7 +39,27 @@ namespace Task_Manager
                 else if (choose == "3")
                 {
                     Console.Clear();
-                    storageDB.addNewTask();
+                    UI.addNewTask();
+                }
+                else if (choose == "4")
+                {
+                    Console.Clear();
+                    UI.editTaskInTable();
+                }
+                else if (choose == "5")
+                {
+                    Console.Clear();
+                    UI.removeTaskFromTable();
+                }
+                else if (choose == "6")
+                {
+                    Console.Clear();
+                    storageDB.createTableInStorage();
+                }
+                else if (choose == "7")
+                {
+                    Console.Clear();
+                    storageDB.removeTableFromStorage();
                 }
                 else if (choose == "9")
                 {
